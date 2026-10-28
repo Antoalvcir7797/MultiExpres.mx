@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MultiExpres.mx | Envíos Rápidos y Seguros</title>
+    
+    <!-- Tailwind CSS para los estilos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración de colores personalizados de MultiExpres -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            green: '#00c853',
+                            greenHover: '#009a40',
+                            grey: '#8A8A8A',
+                            darkblue: '#1c232b',
+                            dark: '#333333',
+                            light: '#f8fafc',
+                            offwhite: '#fafafa'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Estilos personalizados para animaciones -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+            color: #333333;
+        }
+        
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, visibility;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        .pulse-btn {
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(0, 200, 83, 0.5); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 200, 83, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 200, 83, 0); }
+        }
+        
+        /* Ocultar barra de scroll en modal si es necesario */
+        .modal-scroll::-webkit-scrollbar { width: 8px; }
+        .modal-scroll::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 8px;}
+        .modal-scroll::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 8px; }
+        .modal-scroll::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+    </style>
+</head>
+<body class="antialiased scroll-smooth">
+
+    <!-- Navegación -->
+    <nav class="fixed w-full z-50 bg-brand-darkblue shadow-md border-b border-gray-800 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#inicio" class="flex items-center gap-2 group">
+                        <svg viewBox="0 0 100 100" class="w-8 h-8 md:w-10 md:h-10 transform group-hover:scale-105 transition-transform duration-300">
+                            <g fill="#9e9e9e" stroke="#1c232b" stroke-width="2" stroke-linejoin="round">
+                                <path d="M50 15 L85 30 L50 45 L15 30 Z" />
+                                <path d="M15 30 L15 65 L50 80 L50 45 Z" fill="#858585" />
+                                <path d="M50 45 L50 80 L85 65 L85 30 Z" fill="#707070" />
+                            </g>
+                            <g fill="none" stroke="#1c232b" stroke-width="3" stroke-linecap="round">
+                                <path d="M30 21 L65 36" />
+                                <path d="M40 25 L75 40" />
+                            </g>
+                            <path d="M32 37 L32 48 L42 52 L42 41 Z" fill="#9e9e9e" stroke="#1c232b" stroke-width="2" stroke-linejoin="round"/>
+                            <g transform="translate(60, 50)">
+                                <circle cx="15" cy="15" r="18" fill="#9e9e9e" stroke="#1c232b" stroke-width="2" />
+                                <path d="M7 15 L12 20 L23 8" fill="none" stroke="#1c232b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                            </g>
+                        </svg>
+                        <span class="text-white font-bold text-xl md:text-2xl tracking-wide">MultiExpres<span class="text-brand-green">.mx</span></span>
+                    </a>
+                </div>
+                
+                <!-- Menú Desktop -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#ventajas" class="text-gray-300 hover:text-brand-green transition-colors font-medium">Ventajas</a>
+                    <a href="#prohibidos" class="text-gray-300 hover:text-brand-green transition-colors font-medium">Artículos Prohibidos</a>
+                    <a href="#medicion" class="text-gray-300 hover:text-brand-green transition-colors font-medium">¿Cómo Medir?</a>
+                    <a href="https://wa.link/yi8sdi" target="_blank" class="pulse-btn bg-brand-green hover:bg-brand-greenHover text-white px-5 py-2.5 rounded-full font-semibold transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                        ¡Cotiza ya! <i class="fa-brands fa-whatsapp ml-1"></i>
+                    </a>
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-white hover:text-brand-green focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-2xl text-white"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Móvil Desplegable -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-darkblue border-t border-gray-800 shadow-lg absolute w-full">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#ventajas" class="block px-3 py-3 text-base font-medium text-gray-300 hover:text-brand-green hover:bg-gray-800 rounded-md">Ventajas</a>
+                <a href="#prohibidos" class="block px-3 py-3 text-base font-medium text-gray-300 hover:text-brand-green hover:bg-gray-800 rounded-md">Artículos Prohibidos</a>
+                <a href="#medicion" class="block px-3 py-3 text-base font-medium text-gray-300 hover:text-brand-green hover:bg-gray-800 rounded-md">¿Cómo Medir?</a>
+                <a href="https://wa.link/yi8sdi" target="_blank" class="block mt-4 text-center bg-brand-green text-white px-4 py-3 rounded-xl font-semibold shadow-md">
+                    ¡Cotiza ya! <i class="fa-brands fa-whatsapp ml-1"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- INICIO (Hero Section) -->
+    <section id="inicio" class="pt-32 pb-20 md:pt-40 md:pb-28 bg-brand-offwhite">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-section">
+            <div class="inline-flex items-center justify-center p-4 bg-brand-light rounded-full mb-6 border border-gray-100 shadow-sm">
+                <i class="fa-solid fa-box-check text-brand-grey text-3xl mr-3"></i> 
+                <span class="text-brand-green font-semibold tracking-wide uppercase text-sm">Tus envíos, más fáciles que nunca</span>
+            </div>
+            
+            <h1 class="text-4xl md:text-6xl font-bold text-gray-800 leading-tight mb-6 max-w-4xl mx-auto">
+                Simplificamos tus envíos conectándote con las mejores opciones de México.
+            </h1>
+            
+            <p class="text-lg md:text-xl text-gray-500 mb-10 max-w-2xl mx-auto font-light">
+                Rápido, seguro y sin complicaciones. Deja todo en nuestras manos y asegura que tu paquete llegue a su destino.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <a href="https://wa.link/yi8sdi" target="_blank" class="pulse-btn bg-brand-green hover:bg-brand-greenHover text-white text-lg font-bold py-4 px-10 rounded-full shadow-lg transform transition-transform hover:scale-105 flex items-center justify-center w-full sm:w-auto">
+                    <i class="fa-brands fa-whatsapp text-2xl mr-2"></i> ¡Cotiza ya!
+                </a>
+                <a href="#ventajas" class="text-brand-grey hover:text-brand-green font-medium py-4 px-6 transition-colors flex items-center w-full sm:w-auto justify-center">
+                    Conoce más <i class="fa-solid fa-arrow-down ml-2 text-sm"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- VENTAJAS -->
+    <section id="ventajas" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 fade-in-section">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">¿Por qué elegirnos?</h2>
+                <div class="h-1 w-20 bg-brand-green mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Ventaja 1 -->
+                <div class="bg-brand-light rounded-2xl p-8 text-center shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-2 fade-in-section">
+                    <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center shadow-sm mb-6 text-brand-green">
+                        <i class="fa-solid fa-house-chimney text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Desde tu hogar</h3>
+                    <p class="text-gray-500">Realiza todo el proceso desde la comodidad de tu casa, ahorrando tiempo y largas filas.</p>
+                </div>
+
+                <!-- Ventaja 2 -->
+                <div class="bg-brand-light rounded-2xl p-8 text-center shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-2 fade-in-section" style="transition-delay: 100ms;">
+                    <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center shadow-sm mb-6 text-brand-green">
+                        <i class="fa-solid fa-truck-ramp-box text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Recolección a Domicilio</h3>
+                    <p class="text-gray-500">La paquetería de tu elección acude directamente a la puerta de tu domicilio o negocio a recoger tu paquete.</p>
+                </div>
+
+                <!-- Ventaja 3 -->
+                <div class="bg-brand-light rounded-2xl p-8 text-center shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-2 fade-in-section" style="transition-delay: 200ms;">
+                    <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center shadow-sm mb-6 text-brand-green">
+                        <i class="fa-solid fa-bolt text-3xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Servicio Exprés</h3>
+                    <p class="text-gray-500 mb-3">Tus envíos llegan rápido con entregas estimadas de <strong>1 a 2 días hábiles</strong>.</p>
+                    <p class="text-xs text-brand-grey italic">*Sujeto a cambios y restricciones dependiendo de la zona de envío y la cobertura de la paquetería elegida.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARTÍCULOS PROHIBIDOS -->
+    <section id="prohibidos" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row items-center gap-12 fade-in-section">
+                
+                <div class="w-full lg:w-1/2">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Artículos Prohibidos</h2>
+                    <div class="h-1 w-20 bg-brand-grey mb-6"></div>
+                    <p class="text-gray-600 mb-6 text-lg">
+                        Para garantizar la seguridad de todos los envíos y cumplir con las normas oficiales de las principales paqueterías de México, <strong>existen objetos que no pueden ser enviados.</strong>
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="flex items-center gap-3 text-gray-600">
+                            <i class="fa-solid fa-fire text-red-400 w-6 text-center"></i> <span>Inflamables</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-gray-600">
+                            <i class="fa-solid fa-flask text-red-400 w-6 text-center"></i> <span>Líquidos corrosivos</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-gray-600">
+                            <i class="fa-solid fa-money-bill-wave text-red-400 w-6 text-center"></i> <span>Dinero o Valores</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-gray-600">
+                            <i class="fa-solid fa-paw text-red-400 w-6 text-center"></i> <span>Animales vivos</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-gray-600">
+                            <i class="fa-solid fa-gun text-red-400 w-6 text-center"></i> <span>Armas de fuego y explosivos</span>
+                        </div>
+                        <div class="flex items-center gap-3 text-gray-600">
+                            <i class="fa-solid fa-pills text-red-400 w-6 text-center"></i> <span>Estupefacientes y/o narcóticos</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full lg:w-1/2">
+                    <div class="bg-white rounded-xl shadow-lg border-l-8 border-brand-green p-6 md:p-8 transform transition hover:scale-105">
+                        <div class="flex items-start gap-4">
+                            <div class="text-brand-green text-4xl mt-1">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-800 mb-2">Aviso Importante</h4>
+                                <p class="text-gray-600">
+                                    Es <span class="font-bold text-gray-800">responsabilidad exclusiva de quien envía</span> si el paquete es retenido, decomisado o rechazado por la paquetería al contener artículos indebidos o prohibidos.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GUÍA DE MEDICIÓN -->
+    <section id="medicion" class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center fade-in-section">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Guía Rápida: ¿Cómo medir tu paquete?</h2>
+            <div class="h-1 w-20 bg-brand-green mx-auto rounded-full mb-6"></div>
+            <p class="text-gray-500 text-lg mb-12 max-w-2xl mx-auto">
+                Para cotizar tu envío, solo necesitamos 4 datos básicos de tu caja. Mide las orillas más largas de tu paquete cerrado.
+            </p>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+                <!-- Largo -->
+                <div class="bg-brand-light p-6 rounded-2xl border border-gray-100 flex flex-col items-center text-center">
+                    <div class="mb-4">
+                        <svg viewBox="0 0 100 100" fill="none" class="w-20 h-20">
+                            <g stroke="#9CA3AF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M50 20 L85 37 L50 54 L15 37 Z" fill="#F3F4F6" />
+                                <path d="M15 37 L15 70 L50 87 L50 54 Z" fill="#E5E7EB" />
+                                <path d="M85 37 L85 70 L50 87 L50 54 Z" fill="#D1D5DB" />
+                            </g>
+                            <path d="M15 70 L50 87" stroke="#00a650" stroke-width="6" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <h4 class="font-bold text-lg text-gray-800">Largo</h4>
+                    <p class="text-sm text-gray-500 mt-1">El lado más extenso</p>
+                </div>
+
+                <!-- Ancho -->
+                <div class="bg-brand-light p-6 rounded-2xl border border-gray-100 flex flex-col items-center text-center">
+                    <div class="mb-4">
+                        <svg viewBox="0 0 100 100" fill="none" class="w-20 h-20">
+                            <g stroke="#9CA3AF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M50 20 L85 37 L50 54 L15 37 Z" fill="#F3F4F6" />
+                                <path d="M15 37 L15 70 L50 87 L50 54 Z" fill="#E5E7EB" />
+                                <path d="M85 37 L85 70 L50 87 L50 54 Z" fill="#D1D5DB" />
+                            </g>
+                            <path d="M85 70 L50 87" stroke="#00a650" stroke-width="6" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <h4 class="font-bold text-lg text-gray-800">Ancho</h4>
+                    <p class="text-sm text-gray-500 mt-1">El lado más corto</p>
+                </div>
+
+                <!-- Alto -->
+                <div class="bg-brand-light p-6 rounded-2xl border border-gray-100 flex flex-col items-center text-center">
+                    <div class="mb-4">
+                        <svg viewBox="0 0 100 100" fill="none" class="w-20 h-20">
+                            <g stroke="#9CA3AF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M50 20 L85 37 L50 54 L15 37 Z" fill="#F3F4F6" />
+                                <path d="M15 37 L15 70 L50 87 L50 54 Z" fill="#E5E7EB" />
+                                <path d="M85 37 L85 70 L50 87 L50 54 Z" fill="#D1D5DB" />
+                            </g>
+                            <path d="M50 54 L50 87" stroke="#00a650" stroke-width="6" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <h4 class="font-bold text-lg text-gray-800">Alto</h4>
+                    <p class="text-sm text-gray-500 mt-1">La altura de la caja</p>
+                </div>
+
+                <!-- Peso -->
+                <div class="bg-brand-light p-6 rounded-2xl border border-gray-100 flex flex-col items-center text-center">
+                    <div class="mb-4">
+                        <svg viewBox="0 0 100 100" fill="none" class="w-20 h-20 relative">
+                            <g stroke="#9CA3AF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M50 20 L85 37 L50 54 L15 37 Z" fill="#F3F4F6" />
+                                <path d="M15 37 L15 70 L50 87 L50 54 Z" fill="#E5E7EB" />
+                                <path d="M85 37 L85 70 L50 87 L50 54 Z" fill="#D1D5DB" />
+                            </g>
+                            <circle cx="80" cy="75" r="16" fill="#00a650" />
+                            <text x="80" y="80" fill="white" font-size="14" font-weight="bold" text-anchor="middle" font-family="sans-serif">KG</text>
+                        </svg>
+                    </div>
+                    <h4 class="font-bold text-lg text-gray-800">Peso</h4>
+                    <p class="text-sm text-gray-500 mt-1">Peso en kilogramos</p>
+                </div>
+            </div>
+            
+            <div class="mt-12">
+                <p class="text-brand-grey italic text-sm">Con estos simples datos en centímetros (cm) y kilos (kg) estamos listos para cotizarte.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-50 border-t border-gray-200 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center md:items-start mb-12 text-center md:text-left">
+                
+                <div class="mb-8 md:mb-0">
+                    <a href="#inicio" class="flex items-center justify-center md:justify-start gap-2 mb-4 group">
+                        <svg viewBox="0 0 100 100" class="w-10 h-10 md:w-12 md:h-12 transform group-hover:scale-105 transition-transform duration-300">
+                            <g fill="#9e9e9e" stroke="#333333" stroke-width="2" stroke-linejoin="round">
+                                <path d="M50 15 L85 30 L50 45 L15 30 Z" />
+                                <path d="M15 30 L15 65 L50 80 L50 45 Z" fill="#858585" />
+                                <path d="M50 45 L50 80 L85 65 L85 30 Z" fill="#707070" />
+                            </g>
+                            <g fill="none" stroke="#333333" stroke-width="3" stroke-linecap="round">
+                                <path d="M30 21 L65 36" />
+                                <path d="M40 25 L75 40" />
+                            </g>
+                            <path d="M32 37 L32 48 L42 52 L42 41 Z" fill="#9e9e9e" stroke="#333333" stroke-width="2" stroke-linejoin="round"/>
+                            <g transform="translate(60, 50)">
+                                <circle cx="15" cy="15" r="18" fill="#9e9e9e" stroke="#333333" stroke-width="2" />
+                                <path d="M7 15 L12 20 L23 8" fill="none" stroke="#333333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+                            </g>
+                        </svg>
+                        <span class="font-bold text-2xl md:text-3xl tracking-wide text-brand-darkblue">MultiExpres<span class="text-brand-green">.mx</span></span>
+                    </a>
+                    <p class="text-gray-500 max-w-xs mx-auto md:mx-0 mt-2">
+                        Haciendo tus envíos más fáciles, rápidos y seguros a todo México.
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center md:items-end">
+                    <h4 class="font-bold text-gray-800 mb-4 uppercase tracking-wider text-sm">Síguenos y Contáctanos</h4>
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/share/154FAgMoaaJ/" target="_blank" class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-gray-500 shadow-sm hover:bg-brand-green hover:text-white transition-all transform hover:-translate-y-1">
+                            <i class="fa-brands fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="https://www.instagram.com/multiexpres.mx?srtk=MndiaGFmZTB0M214" target="_blank" class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-gray-500 shadow-sm hover:bg-brand-green hover:text-white transition-all transform hover:-translate-y-1">
+                            <i class="fa-brands fa-instagram text-xl"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@multiexpres.mx" target="_blank" class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-gray-500 shadow-sm hover:bg-brand-green hover:text-white transition-all transform hover:-translate-y-1">
+                            <i class="fa-brands fa-tiktok text-xl"></i>
+                        </a>
+                        <a href="mailto:multiexpres.mx@gmail.com" class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-gray-500 shadow-sm hover:bg-brand-grey hover:text-white transition-all transform hover:-translate-y-1">
+                            <i class="fa-regular fa-envelope text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
+                <p>&copy; <span id="year"></span> MultiExpres.mx. Todos los derechos reservados.</p>
+                <div class="mt-4 md:mt-0 space-x-4">
+                    <button onclick="openModal('termsModal')" class="hover:text-brand-green transition-colors focus:outline-none">Términos de servicio</button>
+                    <button onclick="openModal('privacyModal')" class="hover:text-brand-green transition-colors focus:outline-none">Política de privacidad</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL: Términos de Servicio -->
+    <div id="termsModal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-[100] flex items-center justify-center p-4 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[85vh] flex flex-col overflow-hidden relative">
+            
+            <div class="flex justify-between items-center p-5 md:p-6 border-b border-gray-100">
+                <h3 class="text-xl md:text-2xl font-bold text-gray-800">Términos de Servicio</h3>
+                <button onclick="closeModal('termsModal')" class="text-gray-400 hover:text-brand-green focus:outline-none transition-colors">
+                    <i class="fa-solid fa-xmark text-2xl"></i>
+                </button>
+            </div>
+            
+            <div class="p-5 md:p-8 overflow-y-auto modal-scroll space-y-6 text-gray-600 text-sm md:text-base leading-relaxed">
+                <div>
+                    <h4 class="font-bold text-gray-800 mb-2">1. Naturaleza del Servicio</h4>
+                    <p>MultiExpres.mx actúa de manera exclusiva como un facilitador o intermediario logístico. Nuestro objetivo es ofrecerle las mejores opciones y tarifas conectando su solicitud de envío con las empresas de paquetería líderes en México. Nosotros no transportamos directamente la mercancía.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-800 mb-2">2. Responsabilidades del Usuario Remitente</h4>
+                    <p>El cliente es totalmente responsable de declarar con precisión las dimensiones (largo, ancho, alto) y el peso del paquete. Asimismo, se compromete a que el contenido del paquete sea lícito. Cualquier sobrepeso o dimensión excedente detectada por la paquetería podrá derivar en cargos adicionales que el usuario deberá cubrir.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-800 mb-2">3. Artículos Prohibidos y Retenciones</h4>
+                    <p>Queda estrictamente prohibido el envío de dinero, valores, armas de fuego, explosivos, animales vivos, narcóticos, líquidos inflamables o corrosivos y piratería. <strong>El envío de estos artículos es bajo la responsabilidad legal y exclusiva del remitente.</strong> MultiExpres.mx no se responsabiliza por paquetes decomisados, destruidos o retenidos por autoridades o por la propia paquetería a causa del incumplimiento de esta norma.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-800 mb-2">4. Tiempos de Entrega y Recolección</h4>
+                    <p>Los tiempos de entrega (Ej. 1 a 2 días hábiles en envíos Exprés) y los horarios de recolección a domicilio son <em>estimados</em> y están sujetos a la logística interna de la empresa de paquetería seleccionada. Retrasos por clima, zonas de difícil acceso (zonas extendidas) o causas de fuerza mayor están fuera del control de MultiExpres.mx.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-800 mb-2">5. Daños, Extravíos y Seguros</h4>
+                    <p>En caso de extravío o daño del paquete durante su tránsito, las políticas de indemnización, deducibles y tiempos de resolución estarán sujetos única y exclusivamente a los términos de la empresa de paquetería encargada del servicio. MultiExpres.mx brindará apoyo y orientación al usuario para levantar el reporte correspondiente.</p>
+                </div>
+            </div>
+            
+            <div class="p-4 border-t border-gray-100 bg-gray-50 flex justify-end">
+                <button onclick="closeModal('termsModal')" class="px-6 py-2.5 bg-brand-green text-white rounded-lg font-medium hover:bg-brand-greenHover transition-colors shadow-sm">Entendido y Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Aviso de Privacidad -->
+    <div id="privacyModal" class="hidden fixed inset-0 bg-black bg-opacity-60 z-[100] flex items-center justify-center p-4 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[85vh] flex flex-col overflow-hidden relative">
+            
+            <div class="flex justify-between items-center p-5 md:p-6 border-b border-gray-100">
+                <h3 class="text-xl md:text-2xl font-bold text-gray-800">Aviso de Privacidad</h3>
+                <button onclick="closeModal('privacyModal')" class="text-gray-400 hover:text-brand-green focus:outline-none transition-colors">
+                    <i class="fa-solid fa-xmark text-2xl"></i>
+                </button>
+            </div>
+            
+            <div class="p-5 md:p-8 overflow-y-auto modal-scroll space-y-6 text-gray-600 text-sm md:text-base leading-relaxed">
+                <p>En cumplimiento con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares en México, <strong>MultiExpres.mx</strong> le informa sobre el uso y protección de su información personal:</p>
+                
+                <div>
+                    <h4 class="font-bold text-gray-800 mb-2">1. Datos Recabados</h4>
+                    <p>Para brindarle el servicio de cotización y generación de envíos, recopilamos los siguientes datos personales: Nombre completo (remitente y destinatario), domicilio completo de origen y destino (calle, número, colonia, código postal, ciudad, estado), número de teléfono celular o fijo, y dirección de correo electrónico.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-800 mb-2">2. Finalidad del Uso de sus Datos</h4>
+                    <p>La información proporcionada será utilizada exclusiva y estrictamente para los siguientes fines:
+                    <ul class="list-disc pl-5 mt-2 space-y-1">
+                        <li>Cotización de envíos y logística.</li>
+                        <li>Generación de las guías de rastreo correspondientes.</li>
+                        <li>Programación de la recolección a domicilio.</li>
+                        <li>Contacto directo referente a notificaciones del estado de su paquete, aclaraciones o soporte al cliente.</li>
+                    </ul></p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-800 mb-2">3. Transferencia de Datos</h4>
+                    <p>Para cumplir con las finalidades descritas, sus datos personales como dirección, nombre y teléfono <strong>deben ser compartidos con las empresas de mensajería y paquetería</strong> (los proveedores finales del servicio de transporte) elegidas por usted al momento de confirmar el envío. No comercializamos, vendemos, ni transferimos sus datos a terceros ajenos al servicio logístico.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-800 mb-2">4. Derechos ARCO (Acceso, Rectificación, Cancelación y Oposición)</h4>
+                    <p>Usted tiene el derecho de conocer qué datos personales tenemos, para qué los utilizamos y las condiciones de su uso. Asimismo, es su derecho solicitar la corrección de su información, la eliminación de nuestros registros y/o oponerse al uso de sus datos para fines específicos. Para ejercer cualquiera de estos derechos, por favor envíe su solicitud al correo: <strong>multiexpres.mx@gmail.com</strong>.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-gray-800 mb-2">5. Cambios a este Aviso</h4>
+                    <p>Este aviso de privacidad puede sufrir modificaciones, cambios o actualizaciones derivadas de nuevos requerimientos legales o de nuestras propias necesidades por los servicios que ofrecemos. Le mantendremos informado sobre cambios a través de nuestra página web.</p>
+                </div>
+            </div>
+            
+            <div class="p-4 border-t border-gray-100 bg-gray-50 flex justify-end">
+                <button onclick="closeModal('privacyModal')" class="px-6 py-2.5 bg-brand-green text-white rounded-lg font-medium hover:bg-brand-greenHover transition-colors shadow-sm">Entendido y Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Actualizar el año en el footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Funciones para Modales
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('hidden');
+            // Retraso ligero para la animación de opacidad (fade-in)
+            setTimeout(() => {
+                modal.classList.add('opacity-100');
+            }, 10);
+            document.body.classList.add('overflow-hidden'); // Evita hacer scroll de la página de fondo
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.add('hidden');
+            modal.classList.remove('opacity-100');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        // Cerrar modal al hacer clic afuera del contenido
+        window.onclick = function(event) {
+            const terms = document.getElementById('termsModal');
+            const privacy = document.getElementById('privacyModal');
+            if (event.target == terms) closeModal('termsModal');
+            if (event.target == privacy) closeModal('privacyModal');
+        }
+
+        // Lógica del menú móvil
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        const mobileLinks = menu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+
+        // Animación al hacer Scroll
+        document.addEventListener("DOMContentLoaded", function() {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const sections = document.querySelectorAll('.fade-in-section');
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
